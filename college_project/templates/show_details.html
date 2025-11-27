@@ -1,0 +1,99 @@
+{% extends 'navbar.html' %}
+{% block content %}
+{% load static %}
+<title>Student Details</title>
+<style>
+        body {
+            background: url("{% static 'images/admin_dash_bg.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        h1 {
+            margin: 30px 0;
+            font-weight: 600;
+            color: #343a40;
+        }
+        table {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+        }
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        td a {
+            color: white;
+            text-decoration: none;
+        }
+        button {
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+        }
+        button.edit-btn {
+            background-color: #28a745;
+        }
+        button.delete-btn {
+            background-color: #dc3545;
+        }
+        button:hover {
+            opacity: 0.85;
+        }
+</style>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4" style="font-size: 40px; font-weight: 100;">DETAILS OF STUDENT</h1>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-primary text-center">
+                <tr>
+                    <th>Student Name</th>
+                    <th>Address</th>
+                    <th>Age</th>
+                    <th>Joining Date</th>
+                    <th>Course Name</th>
+                    <th>Course Fee</th>
+                    <th colspan="2">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% if student %}
+                    {% for s in student %}
+                    <tr class="text-center">
+                        <td>{{ s.studentname }}</td>
+                        <td>{{ s.address }}</td>
+                        <td>{{ s.age }}</td>
+                        <td>{{ s.joiningdate }}</td>
+                        <td>{{ s.course.coursename }}</td>
+                        <td>{{ s.course.fees }}</td>
+
+                        <td>
+                            <a href="{% url 'edit' s.id %}" class="btn btn-success btn-sm">Edit</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'delete_student' s.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="8">No student details available.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% for msg in messages %}
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+        {{ msg }}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

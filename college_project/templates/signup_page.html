@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Signup-Page</title>
+    {% load static %}
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .signup-box {
+            max-width: 450px;
+            margin: auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .signup-box h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 600;
+        }
+        .signup-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        .signup-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+        .signup-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, blue 0%, blue 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+        .signup-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .signup-box p {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        .signup-box a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .signup-box a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img src="{% static 'images/college-logo.png' %}" alt="College Logo" width="40" height="40" class="d-inline-block align-text-top me-2">
+                Main University
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <!-- <span class="navbar-toggler-icon"></span> -->
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav mr-auto ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href=""></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href=""></a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="{% url 'login_page' %}"><button class="btn btn-success ml-3">Login</button></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    {% block content %}
+    <div class="signup-box">
+        <h2>Teacher Signup</h2>
+        <form action="{% url 'signup_function' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" class="signup-input" name="fname" placeholder="Firstname" required>
+            <input type="text" class="signup-input" name="lname" placeholder="Lastname" required>
+            <input type="text" class="signup-input" name="uname" placeholder="Username" required>
+            <input type="number" class="signup-input" name="age" placeholder="Age" id="" required>
+            <input type="text" class="signup-input" name="address" placeholder="Address" id="" required>
+            <input type="number" class="signup-input" name="phno" placeholder="Phone Number" id="phone" required>
+            <input type="email" class="signup-input" name="mail" placeholder="Email Address" id="email" required>
+            <input type="password" class="signup-input" name="pass" placeholder="Password" id="password" required>
+            <input type="password" class="signup-input" name="cpass" placeholder="Confirm Password" id="cpassword" required>
+            <input type="file" class="signup-input" name="profile" placeholder="Upload Profile Image" required>
+            <select class="signup-input" name="crs" id="" required>
+                <option value="">Select Course</option>
+                {% for c in course %}
+                <option value="{{c.id}}">{{c.coursename}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="signup-button">Sign Up</button>
+        </form>
+        {% for msg in messages %}
+            <div class="alert alert-danger mt-3">{{ msg }}</div>
+        {% endfor %}
+        <p>Already have an account? <a href="{% url 'login_page' %}">Log In</a></p>
+    </div>
+    {% endblock %}
+    
+<script>
+    function validateForm() {
+        const phone = document.getElementById("phone").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        // Phone: exactly 10 numbers
+        const phonePattern = /^[0-9]{10}$/;
+        if (!phonePattern.test(phone)) {
+            alert("Phone number must be exactly 10 digits.");
+            return false;
+        }
+
+        // Email validation
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            alert("Enter a valid email address.");
+            return false;
+        }
+        // Password length check
+        if (password.length < 6) {
+        alert("Password must be at least 6 characters long.");
+        return false;
+    }
+        return true; // Allows form to submit
+    }
+</script>
+
+</body>
+</html>

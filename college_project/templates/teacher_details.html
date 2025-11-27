@@ -1,0 +1,89 @@
+{% extends 'navbar.html' %}
+{% block content %}
+{% load static %}
+<title>Teacher Details</title>
+<style>
+    body {
+        background: url("{% static 'images/admin_dash_bg.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+        padding: 0 !important;
+        color: #0f172a;
+    }
+    h1 {
+        margin: 30px 0;
+        font-weight: 600;
+        color: #343a40;
+    }
+    table {
+        background-color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    th {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+    }
+    td {
+        text-align: center;
+        vertical-align: middle;
+    }
+    td a {
+        color: white;
+        text-decoration: none;
+    }
+    button {
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+    }
+    button.edit-btn {
+        background-color: #28a745;
+    }
+    button.delete-btn {
+        background-color: #dc3545;
+    }
+    button:hover {
+        opacity: 0.85;
+    }
+</style>
+<div class="container mt-5">
+    <h1 class="text-center mb-4" style="font-size: 40px; font-weight: 100;">TEACHER DETAILS</h1>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-primary text-center">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Profile Picture</th>
+                <th colspan="2">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% if teacher %}
+                    {% for t in teacher %}
+                    <tr class="text-center">
+                        <td>{{ t.user.first_name }} {{ t.user.last_name }}</td>
+                        <td>{{ t.user.email }}</td>
+                        <td>{{ t.phone }}</td>
+                        <td><img src="{{ t.image.url }}" alt="Profile Picture" width="90" height="90"></td>
+                        <td>
+                            <a href="{% url 'delete_teacher' t.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">No teacher details available.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+    <footer class="bg-dark text-center py-3 fixed-bottom">
+        <p style="color: thistle;">&copy; 2024 CollegePortal. All rights reserved.</p>
+    </footer>
+{% endblock %}

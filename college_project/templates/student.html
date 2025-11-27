@@ -1,0 +1,82 @@
+{% extends 'navbar.html' %}
+{% block content %}
+{% load static %}
+
+<title>Student Registration</title>
+<style>
+  body {
+    padding: 0 !important;
+    background: url("{% static 'images/admin_dash_bg.jpg' %}") no-repeat center center fixed;
+    background-size: cover;
+    color: #0f172a;
+  }
+  .signup-box {
+    background: rgba(255, 255, 255, 0.55);
+    max-width: 450px;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .signup-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .signup-input, .drop {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  
+  .signup-button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #1c1c1c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .signup-button:hover {
+    background-color: #0056b3;
+  }
+</style>
+<div class="signup-box">
+    <h2>Student Registration</h2>
+    <form action="{% url 'add_std_details' %}" method="POST">
+      {% csrf_token %}
+      <input type="text" class="signup-input" name="name" placeholder="Name" required>
+      <input type="text" class="signup-input" name="address" placeholder="Address" required>
+      <input type="number" class="signup-input" name="age" placeholder="Age" required>
+      <input type="date" class="signup-input" name="date" placeholder="Date" required>
+      <select class="drop" name="c" id="" required>
+        <option value="">Select Course</option>
+        {% for c in course %}
+        <option value="{{c.id}}">{{c.coursename}}</option>
+        {% endfor %}
+      </select>
+      <br>
+      <br>
+      {% for msg in messages %}
+        <div class="alert alert-success" role="alert">
+            {{ msg }}
+        </div>
+      {% endfor %}
+      <button type="submit" class="signup-button">Sign Up</button>
+    </form>
+</div>
+{% endblock %}
+
+
+

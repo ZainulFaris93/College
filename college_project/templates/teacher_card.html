@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    {% load static %}
+    <title>Teacher Profile</title>
+    <style>
+        body{
+            background: url("{% static 'images/teach_dash_bg.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            width: 100%;
+        }
+        .card-container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.55);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        .photo-section {
+            flex: 1;
+            text-align: center;
+        }
+        .photo-box {
+            width: 180px;
+            height: 180px;
+            background-color: #e9ecef;
+            border: 2px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .details-section {
+            flex: 2;
+        }
+        .details-section h2 {
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .details-section p {
+            margin: 6px 0;
+            font-size: 16px;
+        }
+        .badge {
+            background-color: #17a2b8;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'images/college-logo.png' %}" alt="College Logo" width="40" height="40" class="d-inline-block align-text-top me-2">
+                Main University- Teacher Portal
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav mr-auto ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href=""></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href=""></a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="btn btn-danger" href="{% url 'logout_function' %}">logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% for msg in messages %}
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            {{ msg }}
+        </div>
+    {% endfor %}
+
+    {% block content %}
+    <div class="card-container">
+    <div class="photo-section">
+        <div class="photo-box">
+            {% if tcr.image %}
+                <img src="{{ tcr.image.url }}" alt="" style="width: 180px; height: 180px;">
+            {% else %}
+                photo
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="details-section">
+        <h2>{{ tcr.user.first_name }} {{ tcr.user.last_name }}</h2>
+        <p><strong>Age:</strong> {{ tcr.age }}</p>
+        <p><strong>Address:</strong> {{ tcr.address }}</p>
+        <p><strong>Phone:</strong> {{ tcr.phone }}</p>
+        <p><strong>Email:</strong> {{ tcr.user.email }}</p>
+        <p><strong>Course:</strong> {{ tcr.course.coursename }}</p>
+        <div class="mt-3">
+            <a href="{% url 'teacher_update' tcr.id %}" class="btn btn-warning">Edit</a>
+            <a href="{% url 'teacher_home' %}" class="btn btn-secondary">Back</a>
+        </div>
+    </div>
+    
+    {% endblock %}
+    <footer class="bg-dark text-center py-3 fixed-bottom">
+        <p style="color: thistle;">&copy; 2024 CollegePortal. All rights reserved.</p>
+    </footer>
+</body>
+</html>
